@@ -3,7 +3,7 @@ pragma solidity ^0.8.4;
 
 import "./JPYCoin.sol";
 
-contract Dex {
+contract DEX {
     event buy(address acount, address _tokenAddr, uint256 _cost, uint256 _amount);
     event sell(address acount, address _tokenAddr, uint256 _cost, uint256 _amount);
 
