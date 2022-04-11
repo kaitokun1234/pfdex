@@ -34,6 +34,8 @@ contract("ERC20 token test", (accounts) => {
             const aliceBalance = await jpyc.balanceOf(alice);
             const bobBalance = await jpyc.balanceOf(bob);
             expect(await jpyc.totalSupply()).to.bignumber.equal(ownerBalance);
+            expect(aliceBalance).to.bignumber.equal(toWei(0));
+            expect(bobBalance).to.bignumber.equal(toWei(0));
         })
     })
 
@@ -41,9 +43,19 @@ contract("ERC20 token test", (accounts) => {
         expect(await gldc.totalSupply()).to.bignumber.equal(toWei(1000000));
     })
 
-    it("Should revert when transfer amount > balance", async () => {
-        const ownerBalance = await gldc.balanceOf(owner);
-        const transferAmount = ownerBalance.add(new BN(1));
-        await truffleAssert.reverts(gldc.transfer(alice, transferAmount));
-    });
+    describe("transfer", () => {
+        it("Should revert when transfer amount > balance", async () => {
+            const ownerBalance = await gldc.balanceOf(owner);
+            const transferAmount = ownerBalance.add(new BN(1));
+            await truffleAssert.reverts(gldc.transfer(alice, transferAmount));
+        });
+
+        it("Should update correct balance after transfer", async() =>{
+            const bobBalance = await oilc.balanceOf(bob);
+            const transferAmount = new BN(100);
+            await oilc.transfer(bob, transferAmount);
+            const newBobBalance = await oilc.balanceOf(bob);
+            expect(bobBalance.add(transferAmount)).to.bignumber.equal(newBobBalance);
+        })
+    })
 })
