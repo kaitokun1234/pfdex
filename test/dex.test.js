@@ -28,13 +28,4 @@ contract("DEX test", (accounts) => {
     it("Should revert when input incorrect token Address", async() => {
         await truffleAssert.reverts(dex.sellToken(bob, toWei(1), toWei(1)));
     })
-
-    it("Should update balance of msg.sender and dex", async() => {
-        const senderBalance = jpyc.balanceOf(msg.sender);
-        const dexBalance = jpyc.balanceOf(dex);
-        const swapAmount = toWei(1);
-        await dex.buyToken(msg.sender, swapAmount, swapAmount);
-        const newsenderBalance = jpyc.balanceOf(msg.sender);
-        expect(senderBalance.add(swapAmount)).to.bignumber.equal(newawnsweBalance);
-    })
 })

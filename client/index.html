@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8">
+		<title>DEX SWAP</title>
+		<meta name="keywords" content="blockchain, web3.0, dex">
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+		<script src="./assets/abi.js"></script>
+		<link rel="stylesheet" href="./assets/style.css">
+		<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+	</head>
+
+	<body class="bg-light">
+		<nav class="navbar navbar-light bg-light">
+			<div class="container-fluid">
+				<a href="index.html" class="navbar-brand">DEX SWAP</a>
+				<button type="button" class="btn login btn-secondary d-flex">connect wallet</button>
+			</div>
+		</nav>
+
+		<div class="container">
+			<div class="row">
+				<div class="col-md-2 col-sm-0"></div>
+				<div class="col-md-8 col-sm-12">
+					<div class="mt-5 bg-secondary rounded-3">
+						<div class="content py-2 container">
+							<div class="row">
+								<h2 class="text-white">Swap</h2>
+							</div>
+							<div class="row">
+								<div class="col-10">
+									<input class="form-control" type="text" placeholder="0.0">
+								</div>
+								<div class="col-2">
+									<p class="text-white border text-center">eth</p>
+								</div>
+							</div>
+							<p class="text-center text-light fw-bold h3">↓</p>
+							<div class="row">
+								<div class="col-10">
+									<input class="form-control" type="text" placeholder="0.0">
+								</div>
+								<div class="col-2">
+									<div class="dropdown">
+										<button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+										  jpyc
+										</button>
+										<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+										  <li><a class="dropdown-item" href="#">JPYCoin</a></li>
+										  <li><a class="dropdown-item" href="#">GoldCoin</a></li>
+										  <li><a class="dropdown-item" href="#">OilCoin</a></li>
+										</ul>
+									  </div>
+									  
+								</div>
+							</div>
+							<button type="button" class="btn btn-warning d-flex mt-2 w-100 fw-bold">exchange</button>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-2 col-sm-0"></div>
+			</div>
+		</div>
+
+	<script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	<script src="./assets/script.js"></script>
+	</body>
+</html>
