@@ -5,8 +5,8 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Tether is ERC20, ERC20Burnable, Ownable {
-    constructor() ERC20("Tether", "USDT") {
+contract DAI is ERC20, ERC20Burnable, Ownable {
+    constructor() ERC20("Dai", "DAI") {
         _mint(msg.sender, 1000000 * 10 ** decimals());
     }
 
@@ -15,8 +15,8 @@ contract Tether is ERC20, ERC20Burnable, Ownable {
     }
 }
 
-contract BNB is ERC20, ERC20Burnable, Ownable {
-    constructor() ERC20("BNB", "BNB") {
+contract LINK is ERC20, ERC20Burnable, Ownable {
+    constructor() ERC20("ChainLink", "LINK") {
         _mint(msg.sender, 1000000 * 10 ** decimals());
     }
 
@@ -25,8 +25,8 @@ contract BNB is ERC20, ERC20Burnable, Ownable {
     }
 }
 
-contract Dogecoin is ERC20, ERC20Burnable, Ownable {
-    constructor() ERC20("Dogecoin", "DOGE") {
+contract COMP is ERC20, ERC20Burnable, Ownable {
+    constructor() ERC20("Compound", "COMP") {
         _mint(msg.sender, 1000000 * 10 ** decimals());
     }
 
