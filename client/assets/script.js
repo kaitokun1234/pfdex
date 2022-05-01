@@ -1,9 +1,10 @@
 let web3, user, dexInst, tokenInst, priceData;
+let token = undefined;
 let buyMode = true;
-const dexAddr = "0x31cDB5c58805C7Aa770ec49cCbEf5aa17862FC5e";
-const tokens = {JPYC:"0x6424D9F2d66e9173f1242526fE1efab9DB114279",
-                BNB: "0x0E51c5FA48837b4622a610cF3a2dbaf5b1624a0D",
-                USDT:"0xbf96F52975DA5cBbD609e3Ab331Ab64bd50C414F"}
+const dexAddr = "0x9bAF905a932B266d2FD5be65599533c92f2Ec00E";
+const tokens = {DAI:"0x56b63755e5eba8a5066b3cB2cC66792e69819fD6",
+                LINK: "0x72b9B4a9331FbFdACf2508013d57943F426f86A8",
+                COMP:"0x7EBEf108Ac183BC548a1d681a5dc1728F1E96C9f"}
 
 $(document).ready(async () => {
   if(window.ethereum){
@@ -14,6 +15,7 @@ $(document).ready(async () => {
   }
 
   priceData = await getPrice();
+  console.dir(priceData);
 });
 
 $(".btn.login").click(async () => {
@@ -30,7 +32,7 @@ $(".btn.login").click(async () => {
 
 $(function(){
   $('.dropdown-menu .dropdown-item').click(function(){
-    let token = $(this).attr('value');
+    token = $(this).attr('value');
     let visibleItem = $('.dropdown-toggle', $(this).closest('.dropdown'));
     visibleItem.text(token);
     if(user){
@@ -50,6 +52,14 @@ $(".btn.allow").click(async () => {
     allowtxt = "↓";
   }
   $(".btn.allow").html(allowtxt);
+})
+
+$(".input").on("input", function(){
+  if(token == undefined){
+    return;
+  }
+  const input = parseFloat($(this).val());
+  updateOutput(input);
 })
 
 $(".btn.swap").click(async() => {
@@ -101,5 +111,30 @@ async function sellToken(){
 }
 
 async function getPrice(){
-  
+  const daiData = await (await fetch("https://api.coingecko.com/api/v3/simple/price?ids=dai&vs_currencies=eth")).json();
+  const compData = await (await fetch("https://api.coingecko.com/api/v3/simple/price?ids=compound-governance-token&vs_currencies=eth")).json();
+  const linkData = await (await fetch("https://api.coingecko.com/api/v3/simple/price?ids=link&vs_currencies=eth")).json();
+
+  return {
+    daiEth: daiData.dai.eth,
+    linkEth: linkData.link.eth,
+    compEth: compData["compound-governance-token"].eth
+  }
+}
+
+function updateOutput(input){
+  let output;
+  switch(token){
+    case "COMP":
+      output = buyMode ? input / priceData.compEth : input * priceData.compEth;
+      break;
+    case "LINK":
+      output = buyMode ? input / priceData.daiEth : input * priceData.compEth;
+      break;
+    case "DAI":
+      output = buyMode ? input / priceData.linkEth : input * priceData.compEth;
+      break;
+  }
+  const exchangeRate = output / input;
+  $(".output").val(output);
 }
