@@ -27,22 +27,22 @@
 							<div class="row">
 								<h2 class="text-white">Swap</h2>
 							</div>
-							<div class="row">
-								<div class="col-10">
-									<input class="form-control input" type="text" placeholder="0.0">
+							<div class="row input mt-1">
+								<div class="col-9">
+									<input class="form-control input" type="number" placeholder="0.0">
 								</div>
-								<div class="col-2">
-									<p class="text-white border text-center">eth</p>
+								<div class="col-3">
+									<p class="text-dark bg-white border text-center">ETH</p>
 								</div>
 							</div>
 							<center>
 								<button class="btn allow btn-light fw-bold my-1" type="button">↓</button>
 							</center>
-							<div class="row">
-								<div class="col-10">
-									<input class="form-control output" type="text" placeholder="0.0">
+							<div class="row output mt-1">
+								<div class="col-9">
+									<input disabled class="form-control output" type="number" placeholder="0.0">
 								</div>
-								<div class="col-2">
+								<div class="col-3">
 									<div class="dropdown">
 										<button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
 										  選択
@@ -55,11 +55,10 @@
 									  </div>									  
 								</div>
 							</div>
-							<button type="button" class="btn swap btn-warning d-flex mt-2 w-100 fw-bold">exchange</button>
+							<button disabled type="button" class="btn swap btn-warning d-flex mt-2 w-100 fw-bold mb-2" id="swap">please connect wallet</button>
 						</div>
 					</div>
 				</div>
-				<div class="col-md-2 col-sm-0"></div>
 			</div>
 		</div>
 

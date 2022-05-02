@@ -25,6 +25,7 @@ $(".btn.login").click(async () => {
       });
       user = accounts[0];
       $(".btn.login").html(user.slice(0,3)+"…"+user.slice(-3));
+      token != undefined ? enableSwap() : $('.btn.swap').html('select token');
   } catch (error){
     alert(error.message);
   }
@@ -33,37 +34,38 @@ $(".btn.login").click(async () => {
 $(function(){
   $('.dropdown-menu .dropdown-item').click(function(){
     token = $(this).attr('value');
+    token = token.replace(/\s/g, "");
     let visibleItem = $('.dropdown-toggle', $(this).closest('.dropdown'));
     visibleItem.text(token);
     if(user){
       tokenInst = new web3.eth.Contract(abi.token, tokens[token], {from : user});
+      enableSwap();
     }
+    updateOutput($('.form-control.input').val());
   });
 });
 
 
 $(".btn.allow").click(async () => {
-  let allowtxt;
-  if(buyMode){
-    buyMode=false;
-    allowtxt="↑";
-  } else {
-    buyMode=true;
-    allowtxt = "↓";
-  }
-  $(".btn.allow").html(allowtxt);
+ changeMode();
 })
 
-$(".input").on("input", function(){
+$(".form-control.input").on("input", function(){
   if(token == undefined){
+    alert("please select token");e
     return;
   }
-  const input = parseFloat($(this).val());
-  updateOutput(input);
+  let input = $(this).val();
+  if(input != 0){
+    updateOutput(input);
+  }
 })
 
 $(".btn.swap").click(async() => {
   try{
+    if($('.form-control.input').val() == 0){
+      throw new Error('エラー：金額が0です');
+    }
     buyMode ? await buyToken() : await sellToken()
   }catch (err){
     alert(err.message);
@@ -72,7 +74,7 @@ $(".btn.swap").click(async() => {
 
 function buyToken(){
   const tokenAddr = tokenInst._address;
-  let finalinput = web3.utils.toWei($('.input').val(), 'ether');
+  let finalinput = web3.utils.toWei($('.form-control.input').val(), 'ether');
   let finaloutput = web3.utils.toWei($('.output').val(), 'ether');
   console.log(tokenAddr, finalinput, finaloutput);
   return new Promise((resolve, reject) => {
@@ -87,8 +89,8 @@ function buyToken(){
 }
 
 async function sellToken(){
-  let finalInput = web3.utils.toWei($('.input').val(), 'ether');
-  let finalOutput = web3.utils.toWei($('.output').val(), 'ether');
+  let finalInput = web3.utils.toWei($('.form-control.input').val(), 'ether');
+  let finalOutput = web3.utils.toWei($('.form-control.output').val(), 'ether');
 
   const allowance =await tokenInst.methods.allowance(user, dexAddr).call();
   if(parseInt(finalInput) > parseInt(allowance)){
@@ -124,17 +126,25 @@ async function getPrice(){
 
 function updateOutput(input){
   let output;
-  switch(token){
-    case "COMP":
-      output = buyMode ? input / priceData.compEth : input * priceData.compEth;
-      break;
-    case "LINK":
-      output = buyMode ? input / priceData.daiEth : input * priceData.compEth;
-      break;
-    case "DAI":
-      output = buyMode ? input / priceData.linkEth : input * priceData.compEth;
-      break;
-  }
-  const exchangeRate = output / input;
-  $(".output").val(output);
+  const priceDatas = { DAI: priceData.daiEth,
+                LINK: priceData.linkEth,
+                COMP:priceData.compEth };
+  output = buyMode ? input / priceDatas[token] : input * priceDatas[token];
+  let exchangeRate = output / input;
+  $(".form-control.output").val(output);
+}
+
+function enableSwap(){
+  $('.btn.swap').html('swap');
+  let swapbtn = document.getElementById('swap');
+  swapbtn.disabled = false;
+}
+
+function changeMode(){
+  buyMode = !buyMode;
+  let up = buyMode ? $('.row.input'): $('.row.output');
+  let down = buyMode ? $('.row.output'): $('.row.input');
+  
+  up.insertBefore('.btn.allow');
+  down.insertAfter('.btn.allow');
 }
