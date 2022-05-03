@@ -32,10 +32,10 @@ $(".btn.login").click(async () => {
 })
 
 $(function(){
-  $('.dropdown-menu .dropdown-item').click(function(){
+  $('.dropdown-item').click(function(){
     token = $(this).attr('value');
     token = token.replace(/\s/g, "");
-    let visibleItem = $('.dropdown-toggle', $(this).closest('.dropdown'));
+    let visibleItem = $('.dropdown-trigger', $(this).closest('.dropdown'));
     visibleItem.text(token);
     if(user){
       tokenInst = new web3.eth.Contract(abi.token, tokens[token], {from : user});
@@ -148,3 +148,5 @@ function changeMode(){
   up.insertBefore('.btn.allow');
   down.insertAfter('.btn.allow');
 }
+
+$('.dropdown-trigger').dropdown();
