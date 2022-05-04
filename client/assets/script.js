@@ -32,14 +32,16 @@ $(".btn.login").click(async () => {
 
 $(function(){
   $('.dropdown-item').click(function(){
+    if(!user){
+      alert("ウォレットを接続してください");
+      return;
+    }
     token = $(this).attr('value');
     token = token.replace(/\s/g, "");
     let visibleItem = $('.dropdown-trigger', $(this).closest('.dropdown'));
     visibleItem.text(token);
-    if(user){
       tokenInst = new web3.eth.Contract(abi.token, tokens[token], {from : user});
       enableSwap();
-    }
     updateOutput($('.form-control.input').val());
   });
 });
@@ -102,7 +104,7 @@ async function sellToken(){
   const allowance =await tokenInst.methods.allowance(user, dexAddr).call();
   if(parseInt(finalInput) > parseInt(allowance)){
     try{
-      await tokenInst.methods.approve(dexAddr, finalInput).send();
+      await tokenInst.methods.approve(dexAddr, finalOutput).send();
     } catch(err){
       throw(err);
     }
