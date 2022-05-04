@@ -1,5 +1,5 @@
 var abi = {
-	dex:[
+	dex: [
 		{
 		  "inputs": [
 			{
@@ -140,9 +140,9 @@ var abi = {
 		  "stateMutability": "nonpayable",
 		  "type": "function"
 		}
-	  ],
+	],
 
-	token:[
+	token: [
 		{
 		  "inputs": [
 			{
@@ -429,5 +429,5 @@ var abi = {
 		  "stateMutability": "nonpayable",
 		  "type": "function"
 		}
-	  ]
+	]
 }

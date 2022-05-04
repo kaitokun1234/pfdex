@@ -30,7 +30,7 @@ contract DEX {
     function sellToken(address _tokenAddr, uint256 _cost, uint256 _amount) external supportsToken(_tokenAddr){
         ERC20 token = ERC20(_tokenAddr);
         require(token.balanceOf(msg.sender) >= _cost, "Insufficient token balance");
-        require(address(this).balance >= _amount, "Dex dows not have enough funds");
+        require(address(this).balance >= _amount, "Dex does not have enough funds");
         token.transferFrom(msg.sender, address(this), _cost);
         (bool success, ) = payable(msg.sender).call{value: _amount}("");
         require(success, "ETH transfer failed");

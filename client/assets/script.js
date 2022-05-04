@@ -1,10 +1,10 @@
 let web3, user, dexInst, tokenInst, priceData;
 let token = undefined;
 let buyMode = true;
-const dexAddr = "0x9bAF905a932B266d2FD5be65599533c92f2Ec00E";
-const tokens = {DAI:"0x56b63755e5eba8a5066b3cB2cC66792e69819fD6",
-                LINK: "0x72b9B4a9331FbFdACf2508013d57943F426f86A8",
-                COMP:"0x7EBEf108Ac183BC548a1d681a5dc1728F1E96C9f"}
+const dexAddr = "0x64a93fd42242Fc4628cb29A889Fc06DE829B8791";
+const tokens = {DAI:"0x6eaB53b4E73eF514b2F79b25b51c3e26Bb2EAeD5",
+                LINK: "0x724d22D524885901743086a528b2e5968Ba1C2E9",
+                COMP:"0x31041030E5575F7AB9744991464B0731B3273510"}
 
 $(document).ready(async () => {
   if(window.ethereum){
@@ -15,7 +15,6 @@ $(document).ready(async () => {
   }
 
   priceData = await getPrice();
-  console.dir(priceData);
 });
 
 $(".btn.login").click(async () => {
@@ -52,7 +51,7 @@ $(".btn.allow").click(async () => {
 
 $(".form-control.input").on("input", function(){
   if(token == undefined){
-    alert("please select token");e
+    alert("please select token");
     return;
   }
   let input = $(this).val();
@@ -75,14 +74,22 @@ $(".btn.swap").click(async() => {
 function buyToken(){
   const tokenAddr = tokenInst._address;
   let finalinput = web3.utils.toWei($('.form-control.input').val(), 'ether');
-  let finaloutput = web3.utils.toWei($('.output').val(), 'ether');
-  console.log(tokenAddr, finalinput, finaloutput);
+  let finaloutput = web3.utils.toWei($('.form-control.output').val(), 'ether');
   return new Promise((resolve, reject) => {
       dexInst.methods
       .buyToken(tokenAddr, finalinput, finaloutput)
       .send({ value: finalinput, from: user })
       .then((receipt) => {
-          console.log(receipt);
+          const eventData = receipt.events.buy.returnValues;
+          const amountDisplay = parseFloat(web3.utils.fromWei(eventData._amount, "ether"));
+          const costDisplay = parseFloat(web3.utils.fromWei(eventData._cost, "ether"));
+          const tokenAddr = eventData._tokenAddr;
+          alert(`
+          Swap successful! \n
+          Token address: ${tokenAddr} \n
+          Amount: ${amountDisplay.toFixed(7)} ${token} \n
+          Cost: ${costDisplay.toFixed(7)} ETH
+          `);
           resolve();})
       .catch((err) => reject(err));
 });
@@ -104,9 +111,18 @@ async function sellToken(){
   try{
     const tokenAddr = tokenInst._address;
     const sellTx = await dexInst.methods
-    .sellToken(tokenAddr, finalInput, finalOutput)
+    .sellToken(tokenAddr, finalOutput, finalInput)
     .send({from: user});
-    console.log(sellTx);
+    const eventData = sellTx.events.sell.returnValues;
+          const amountDisplay = parseFloat(web3.utils.fromWei(eventData._amount, "ether"));
+          const costDisplay = parseFloat(web3.utils.fromWei(eventData._cost, "ether"));
+          const _tokenAddr = eventData._tokenAddr;
+          alert(`
+          Swap successful! \n
+          Token address: ${_tokenAddr} \n
+          Amount: ${amountDisplay.toFixed(7)} ${token} \n
+          Cost: ${costDisplay.toFixed(7)} ETH
+          `);
   }catch (err){
     throw (err);
   }
@@ -129,7 +145,8 @@ function updateOutput(input){
   const priceDatas = { DAI: priceData.daiEth,
                 LINK: priceData.linkEth,
                 COMP:priceData.compEth };
-  output = buyMode ? input / priceDatas[token] : input * priceDatas[token];
+  output = input / priceDatas[token];
+                //output = buyMode ? input / priceDatas[token] : input * priceDatas[token];
   let exchangeRate = output / input;
   $(".form-control.output").val(output);
 }
