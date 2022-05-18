@@ -116,15 +116,15 @@ async function sellToken(){
     .sellToken(tokenAddr, finalOutput, finalInput)
     .send({from: user});
     const eventData = sellTx.events.sell.returnValues;
-          const amountDisplay = parseFloat(web3.utils.fromWei(eventData._amount, "ether"));
-          const costDisplay = parseFloat(web3.utils.fromWei(eventData._cost, "ether"));
-          const _tokenAddr = eventData._tokenAddr;
-          alert(`
-          Swap successful! \n
-          Token address: ${_tokenAddr} \n
-          Amount: ${amountDisplay.toFixed(7)} ${token} \n
-          Cost: ${costDisplay.toFixed(7)} ETH
-          `);
+    const amountDisplay = parseFloat(web3.utils.fromWei(eventData._amount, "ether"));
+    const costDisplay = parseFloat(web3.utils.fromWei(eventData._cost, "ether"));
+    const _tokenAddr = eventData._tokenAddr;
+    alert(`
+      Swap successful! \n
+      Token address: ${_tokenAddr} \n
+      Amount: ${amountDisplay.toFixed(7)} ${token} \n
+      Cost: ${costDisplay.toFixed(7)} ETH
+    `);
   }catch (err){
     throw (err);
   }
